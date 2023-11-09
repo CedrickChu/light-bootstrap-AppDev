@@ -18,12 +18,12 @@ if (isset($_POST['submit'])) {
     $lastname = $_POST['lastname'];
     $firstname = $_POST['firstname'];
     $address = $_POST['address'];
-    $office = $_POST['Office'];
+    $office = $_POST['name'];
     $sql = "INSERT INTO office(lastname, firstname, address, office)
-            VALUES ('$name', '$contactno', '$email', '$address', '$city', '$postal')";
+            VALUES ('$lastname', '$firstname', '$address', '$office')";
 
     if (mysqli_query($conn, $sql)) {
-        header("Location: office.php");
+        header("Location: employee.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
@@ -121,43 +121,49 @@ if (isset($_POST['submit'])) {
                     </div>
                 </div>
             </nav>
-            <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
                     <form action="" method="post">
                         <div class="form-group">
-                            <label for="name">Name:</label>
+                            <label for="name">Lastname:</label>
                             <input type="text" id="name" name="name" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="contactno">Contact Number:</label>
+                            <label for="contactno">Firstname:</label>
                             <input type="text" id="contactno" name="contactno" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Email:</label>
+                            <label for="email">Address:</label>
                             <input type="text" id="email" name="email" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="address">Address:</label>
-                            <input type="text" id="address" name="address" required>
-                        </div>
+                            <label for="office">Office:</label>
+                            <select id="office" name="office" required>
+                                <?php
+                                include "db_conn.php";
 
-                        <div class="form-group">
-                            <label for="city">City:</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
+                                $sql = "SELECT id, name FROM records.office";
+                                $result = $conn->query($sql);
 
-                        <div class="form-group">
-                            <label for="postal">Postal:</label>
-                            <input type="text" id="postal" name="postal" required>
-                        </div>
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                    }
+                                } else {
+                                    echo "<option value='' disabled>No offices found</option>";
+                                }
 
+                                $conn->close();
+                                ?>
+                            </select>
+                        </div>
                         <button class="button-button" type="submit" name="submit">Submit</button>
                     </form>
                 </div>
+
                 <footer class="footer">
                     <div class="container-fluid">
                         <nav>
