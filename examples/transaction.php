@@ -18,6 +18,7 @@
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/form.css">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -114,7 +115,9 @@
                                             <h4 class="card-title">Transactions</h4>
                                         </div>
                                         <div class="col text-right">
-                                            <button type="button" class="btn btn-info btn-fill">Add New Transaction</button>
+                                            <a href='add_transaction.php'>
+                                                <button type="button" class="btn btn-info btn-fill">Add New Transaction</button>
+                                            </a>
                                         </div>
                                     </div>
                                     <p class="card-category">Here is a subtitle for this table</p>

@@ -14,23 +14,44 @@
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  -->
  <?php
 include "db_conn.php";
+
 if (isset($_POST['submit'])) {
+    $datelog = date('Y-m-d H:i:s');
+    $documentcode = $_POST['documentcode'];
+    $action = $_POST['action'];
+    $office = $_POST['name'];
     $lastname = $_POST['lastname'];
     $firstname = $_POST['firstname'];
-    $address = $_POST['address'];
-    $office = $_POST['name'];
-    $sql = "INSERT INTO employee(lastname, firstname, address, office_id)
-            VALUES ('$lastname', '$firstname', '$address', '$office')";
+    $remarks = $_POST['remarks'];
 
-    if (mysqli_query($conn, $sql)) {
-        header("Location: employee.php");
-        exit();
+    // Concatenate lastname and firstname to get the employee name
+    $employee_name = $lastname . ' ' . $firstname;
+
+    // Query to retrieve employee_id based on the concatenated name
+    $employee_query = "SELECT id FROM employee WHERE CONCAT(lastname, ' ', firstname) = '$employee_name'";
+    $employee_result = mysqli_query($conn, $employee_query);
+
+    if ($employee_result && $employee_row = mysqli_fetch_assoc($employee_result)) {
+        $employee_id = $employee_row['id'];
+
+        // Insert into the transaction table
+        $sql = "INSERT INTO transaction (datelog, documentcode, action, office_id, employee_id, remarks)
+                VALUES ('$datelog', '$documentcode', '$action', '$office', '$employee_id', '$remarks')";
+
+        if (mysqli_query($conn, $sql)) {
+            header("Location: office.php");
+            exit();
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        echo "<h1>Error retrieving employee_id.<h1>";
     }
+
     mysqli_close($conn);
 }
 ?>
+
  <!DOCTYPE html>
 <html lang="en">
 
@@ -121,50 +142,63 @@ if (isset($_POST['submit'])) {
                     </div>
                 </div>
             </nav>
+            <!-- End Navbar -->
             <div class="content">
-                <div class="container-fluid">
-                <form action="" method="post">
-                    <div class="form-group">
-                        <label for="lastname">Lastname:</label>
-                        <input type="text" id="lastname" name="lastname" required>
-                    </div>
+            <div class="container-fluid">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="documentcode">DOCUMENT CODE: </label>
+                            <select id="documentcode" name="documentcode" required>
+                                <option value="100">100</option>
+                                <option value="101">101</option>
+                                <option value="102">102</option>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="firstname">Firstname:</label>
-                        <input type="text" id="firstname" name="firstname" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="action">ACTION: </label>
+                            <select id="action" name="action" required>
+                                <option value="in">IN</option>
+                                <option value="out">OUT</option>
+                                <option value="complete">COMPLETE</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="office">Office:</label>
+                            <select id="name" name="name" required>
+                                <?php
+                                include "db_conn.php";
 
-                    <div class="form-group">
-                        <label for="address">Address:</label>
-                        <input type="text" id="address" name="address" required>
-                    </div>
+                                $sql = "SELECT id, name FROM records.office";
+                                $result = $conn->query($sql);
 
-                    <div class="form-group">
-                        <label for="name">Office:</label>
-                        <select id="name" name="name" required>
-                            <?php
-                            include "db_conn.php";
-
-                            $sql = "SELECT id, name FROM records.office";
-                            $result = $conn->query($sql);
-
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                    }
+                                } else {
+                                    echo "<option value='' disabled>No offices found</option>";
                                 }
-                            } else {
-                                echo "<option value='' disabled>No offices found</option>";
-                            }
 
-                            $conn->close();
-                            ?>
-                        </select>
-                    </div>
-
-                    <button class="button-button" type="submit" name="submit">Submit</button>
-                </form>
+                                $conn->close();
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Last Name: </label>
+                            <input type="text" id="lastname" name="lastname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname">First Name: </label>
+                            <input type="text" id="firstname" name="firstname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">REMARKS: </label>
+                            <input type="text" id="remarks" name="remarks" required>
+                        </div>
+                        <button class="button-button" type="submit" name="submit">Submit</button>
+                    </form>
                 </div>
-
                 <footer class="footer">
                     <div class="container-fluid">
                         <nav>
