@@ -15,14 +15,11 @@
  <?php
 include "db_conn.php";
 if (isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    $contactno = $_POST['contactno'];
-    $email = $_POST['email'];
+    $lastname = $_POST['lastname'];
+    $firstname = $_POST['firstname'];
     $address = $_POST['address'];
-    $city = $_POST['city'];
-    $postal = $_POST['postal'];
-
-    $sql = "INSERT INTO office(name, contactno, email, address, city, postal)
+    $office = $_POST['Office'];
+    $sql = "INSERT INTO office(lastname, firstname, address, office)
             VALUES ('$name', '$contactno', '$email', '$address', '$city', '$postal')";
 
     if (mysqli_query($conn, $sql)) {

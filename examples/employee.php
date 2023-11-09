@@ -12,35 +12,12 @@
 =========================================================
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  -->
- <?php
-include "db_conn.php";
-if (isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    $contactno = $_POST['contactno'];
-    $email = $_POST['email'];
-    $address = $_POST['address'];
-    $city = $_POST['city'];
-    $postal = $_POST['postal'];
-
-    $sql = "INSERT INTO office(name, contactno, email, address, city, postal)
-            VALUES ('$name', '$contactno', '$email', '$address', '$city', '$postal')";
-
-    if (mysqli_query($conn, $sql)) {
-        header("Location: office.php");
-        exit();
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-    }
-    mysqli_close($conn);
-}
-?>
  <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="./styles/form.css">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -125,78 +102,101 @@ if (isset($_POST['submit'])) {
                 </div>
             </nav>
             <!-- End Navbar -->
+            
             <div class="content">
                 <div class="container-fluid">
-                    <form action="" method="post">
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card strpied-tabled-with-hover">
+                                <div class="card-header ">
+                                    <div class="row">
+                                        <div class="col ">
+                                            <h4 class="card-title">Employee</h4>
+                                        </div>
+                                        <div class="col text-right">
+                                            <a href='add_employee.php'>
+                                                <button type="button" class="btn btn-info btn-fill">Add New Employee</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <p class="card-category">Here is a subtitle for this table</p>
+                                </div>
+                                <?php
+                                include "db_conn.php";
+                                $sql = "SELECT
+                                            e.lastname,
+                                            e.firstname,
+                                            e.address,
+                                            o.name as office
+                                        FROM records.employee e
+                                        INNER JOIN records.office o ON e.office_id = o.id";
 
-                        <div class="form-group">
-                            <label for="contactno">Contact Number:</label>
-                            <input type="text" id="contactno" name="contactno" required>
-                        </div>
+                                $result = $conn->query($sql);
 
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="text" id="email" name="email" required>
-                        </div>
+                                echo "<div class='card-body table-full-width table-responsive'>";
+                                echo "<table class='table table-hover table-striped'>";
+                                echo "<th>LAST NAME</th>";
+                                echo "<th>FIRST NAME</th>";
+                                echo "<th>ADDRESS</th>";
+                                echo "<th>OFFICE</th>";
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<tr>";
+                                        echo "<td>" . $row['lastname'] . "</td>";
+                                        echo "<td>" . $row['firstname'] . "</td>";
+                                        echo "<td>" . $row['address'] . "</td>";
+                                        echo "<td>" . $row['office'] . "</td>";
+                                        echo "</tr>";
+                                    }
 
-                        <div class="form-group">
-                            <label for="address">Address:</label>
-                            <input type="text" id="address" name="address" required>
-                        </div>
+                                    echo "</table>";
+                                } else {
+                                    echo "0 results";
+                                }
 
-                        <div class="form-group">
-                            <label for="city">City:</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
+                                $conn->close();
+                                ?>
 
-                        <div class="form-group">
-                            <label for="postal">Postal:</label>
-                            <input type="text" id="postal" name="postal" required>
+                            </div>
                         </div>
-
-                        <button class="button-button" type="submit" name="submit">Submit</button>
-                    </form>
-                </div>
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <nav>
-                            <ul class="footer-menu">
-                                <li>
-                                    <a href="#">
-                                        Home
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Company
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Portfolio
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Blog
-                                    </a>
-                                </li>
-                            </ul>
-                            <p class="copyright text-center">
-                                ©
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script>
-                                <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                            </p>
-                        </nav>
                     </div>
-                </footer>
+                </div>
             </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav>
+                        <ul class="footer-menu">
+                            <li>
+                                <a href="#">
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Company
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Portfolio
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Blog
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="copyright text-center">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
+                        </p>
+                    </nav>
+                </div>
+            </footer>
         </div>
     </div>
     <!--   -->
