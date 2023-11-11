@@ -132,8 +132,8 @@
                                             CONCAT(e.lastname, ' ', e.firstname) as employee,
                                             t.remarks
                                         FROM recordapp_db.transaction t
-                                        INNER JOIN recordadpp_db.employee e ON t.employee_id = e.id
-                                        INNER JOIN recordsapp_db.office o ON e.office_id = o.id";
+                                        INNER JOIN recordapp_db.employee e ON t.employee_id = e.id
+                                        INNER JOIN recordapp_db.office o ON e.office_id = o.id";
 
                                 $result = $conn->query($sql);
 
