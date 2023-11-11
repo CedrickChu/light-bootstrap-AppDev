@@ -9,7 +9,7 @@
   $servername = "localhost";
   $username = "root";
   $password = "root";
-  $dbase = "records";
+  $dbase = "recordapp_db";
 
   // Create connection
   $conn = new mysqli($servername, $username, $password, $dbase);

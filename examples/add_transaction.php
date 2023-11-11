@@ -144,7 +144,8 @@ if (isset($_POST['submit'])) {
             </nav>
             <!-- End Navbar -->
             <div class="content">
-            <div class="container-fluid">
+                <div class="container-fluid">
+                <h2>Add New Transaction Form</h2>
                     <form action="" method="post">
                         <div class="form-group">
                             <label for="documentcode">DOCUMENT CODE: </label>

@@ -122,6 +122,7 @@ if (isset($_POST['submit'])) {
                 </div>
             </nav>
             <div class="content">
+                <h2>Add New Employee Form</h2>
                 <div class="container-fluid">
                 <form action="" method="post">
                     <div class="form-group">
