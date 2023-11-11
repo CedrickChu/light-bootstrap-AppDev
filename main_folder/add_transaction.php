@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
         }
     } else {
-        echo "<h1>Error retrieving employee_id.<h1>";
+        echo "<script>alert('Error retrieving employee_id.');</script>";
     }
 
     mysqli_close($conn);
