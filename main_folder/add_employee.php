@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
+        <div class="sidebar" data-image="./img/cs.jpg">
             <div class="sidebar-wrapper">
                 <div class="logo text-center">
                     <a class="navbar-brand" href="https://github.com/CedrickChu">
