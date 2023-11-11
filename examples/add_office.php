@@ -130,7 +130,7 @@ if (isset($_POST['submit'])) {
                 <h2>Add New Office Form</h2>
                     <form action="" method="post">
                         <div class="form-group">
-                            <label for="name">Name:</label>
+                            <label for="name">Office Name:</label>
                             <input type="text" id="name" name="name" required>
                         </div>
 

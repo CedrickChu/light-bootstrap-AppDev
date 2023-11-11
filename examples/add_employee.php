@@ -122,48 +122,48 @@ if (isset($_POST['submit'])) {
                 </div>
             </nav>
             <div class="content">
-                <h2>Add New Employee Form</h2>
                 <div class="container-fluid">
-                <form action="" method="post">
-                    <div class="form-group">
-                        <label for="lastname">Lastname:</label>
-                        <input type="text" id="lastname" name="lastname" required>
-                    </div>
+                    <h2>Add New Employee Form</h2>
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="lastname">Lastname:</label>
+                            <input type="text" id="lastname" name="lastname" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="firstname">Firstname:</label>
-                        <input type="text" id="firstname" name="firstname" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="firstname">Firstname:</label>
+                            <input type="text" id="firstname" name="firstname" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="address">Address:</label>
-                        <input type="text" id="address" name="address" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="address" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="name">Office:</label>
-                        <select id="name" name="name" required>
-                            <?php
-                            include "db_conn.php";
+                        <div class="form-group">
+                            <label for="name">Office:</label>
+                            <select id="name" name="name" required>
+                                <?php
+                                include "db_conn.php";
 
-                            $sql = "SELECT id, name FROM records.office";
-                            $result = $conn->query($sql);
+                                $sql = "SELECT id, name FROM records.office";
+                                $result = $conn->query($sql);
 
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                    }
+                                } else {
+                                    echo "<option value='' disabled>No offices found</option>";
                                 }
-                            } else {
-                                echo "<option value='' disabled>No offices found</option>";
-                            }
 
-                            $conn->close();
-                            ?>
-                        </select>
-                    </div>
+                                $conn->close();
+                                ?>
+                            </select>
+                        </div>
 
-                    <button class="button-button" type="submit" name="submit">Submit</button>
-                </form>
+                        <button class="button-button" type="submit" name="submit">Submit</button>
+                    </form>
                 </div>
 
                 <footer class="footer">
