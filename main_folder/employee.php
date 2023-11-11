@@ -127,8 +127,8 @@
                                             e.firstname,
                                             e.address,
                                             o.name as office
-                                        FROM records.employee e
-                                        INNER JOIN records.office o ON e.office_id = o.id";
+                                        FROM recordapp_db.employee e
+                                        INNER JOIN recordapp_db.office o ON e.office_id = o.id";
 
                                 $result = $conn->query($sql);
 

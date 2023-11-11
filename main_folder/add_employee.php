@@ -146,7 +146,7 @@ if (isset($_POST['submit'])) {
                                 <?php
                                 include "db_conn.php";
 
-                                $sql = "SELECT id, name FROM records.office";
+                                $sql = "SELECT id, name FROM recordapp_db.office";
                                 $result = $conn->query($sql);
 
                                 if ($result->num_rows > 0) {
