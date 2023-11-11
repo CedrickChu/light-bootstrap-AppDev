@@ -123,7 +123,7 @@
                                 </div>
                                 <?php
                                 include "db_conn.php";
-                                $sql = "SELECT name, contactno, email, address, city, postal FROM records.office";
+                                $sql = "SELECT name, contactno, email, address, city, postal FROM recordapp_db.office";
                                 $result = $conn->query($sql);
                                 echo "<div class='card-body table-full-width table-responsive'>";
                                 echo "<table class='table table-hover table-striped'>";
