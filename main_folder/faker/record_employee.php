@@ -4,7 +4,7 @@ $faker = Faker\Factory::create();
 $servername = "localhost";
 $username = "root";
 $password = "root";
-$database = "records";
+$database = "recordapp_db";
 
 // Create a database connection
 $conn = mysqli_connect($servername, $username, $password, $database);
