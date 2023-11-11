@@ -35,7 +35,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-image="../assets/img/sidebar-5.jpg">
+        <div class="sidebar" data-image="./img/cs.jpg">
             <div class="sidebar-wrapper">
                 <div class="logo text-center">
                     <a class="navbar-brand" href="https://github.com/CedrickChu">
@@ -88,7 +88,7 @@
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+            <nav  class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="nav navbar-nav mr-auto">
@@ -101,8 +101,7 @@
                     </div>
                 </div>
             </nav>
-            <!-- End Navbar -->
-            
+            <!-- End Navbar --> 
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
