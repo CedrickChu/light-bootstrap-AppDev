@@ -18,6 +18,7 @@
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/form.css">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -88,17 +89,25 @@
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <ul class="nav navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#pablo">
-                                    <span class="no-icon">Log out</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pablo">
+                                <span class="no-icon">Log out</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <form id="searchForm" class="form-inline my-2 my-lg-0" method="GET" action="search_transaction.php">
+                        <input class="form-control mr-sm-2" type="search" name="search" id="searchInput" placeholder="Search" aria-label="Search" style="border: 2px solid #808080;">
+                        <button class="btn  my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                                       
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -109,50 +118,58 @@
                         <div class="col-md-12">
                             <div class="card strpied-tabled-with-hover">
                                 <div class="card-header ">
-                                    <div class="row">
-                                        <div class="col ">
-                                            <h4 class="card-title">Offices</h4>
-                                        </div>
-                                        <div class="col text-right">
-                                            <a href='add_office.php'>
-                                                <button type="button" class="btn btn-info btn-fill">Add New Office</button>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <p class="card-category">Here is a subtitle for this table</p>
+                                    <h1 class="card-title">Search Results: </h1>
                                 </div>
                                 <?php
                                 include "db_conn.php";
-                                $sql = "SELECT name, contactno, email, address, city, postal FROM records.office";
-                                $result = $conn->query($sql);
-                                echo "<div class='card-body table-full-width table-responsive'>";
-                                echo "<table class='table table-hover table-striped'>";
-                                echo "<th>NAME</th>";
-                                echo "<th>CONTACT NUMBER</th>";
-                                echo "<th>EMAIL</th>";
-                                echo "<th>ADDRESS</th>";
-                                echo "<th>CITY</th>";
-                                echo "<th>POSTAL</th>";
 
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['contactno'] . "</td>";
-                                        echo "<td>" . $row['email'] . "</td>";
-                                        echo "<td>" . $row['address'] . "</td>";
-                                        echo "<td>" . $row['city'] . "</td>";
-                                        echo "<td>" . $row['postal'] . "</td>";
-                                        echo "</tr>";
+                                $sql = "SELECT
+                                            t.datelog,
+                                            t.documentcode,
+                                            t.action,
+                                            o.name as office,
+                                            CONCAT(e.lastname, ' ', e.firstname) as employee,
+                                            t.remarks
+                                        FROM recordapp_db.transaction t
+                                        INNER JOIN recordapp_db.employee e ON t.employee_id = e.id
+                                        INNER JOIN recordapp_db.office o ON e.office_id = o.id";
+
+                                if (isset($_GET['search'])) {
+                                    $searchTerm = $_GET['search'];
+
+                                    // Modify the SQL query to include the search condition
+                                    $sql .= " WHERE t.datelog LIKE '%$searchTerm%' OR t.documentcode LIKE '%$searchTerm%' OR t.action LIKE '%$searchTerm%' OR o.name LIKE '%$searchTerm%' OR CONCAT(e.lastname, ' ', e.firstname) LIKE '%$searchTerm%' OR t.remarks LIKE '%$searchTerm%'";
+
+                                    $result = $conn->query($sql);
+
+                                    if ($result->num_rows > 0) {
+                                        echo "<div class='card-body table-full-width table-responsive'>";
+                                        echo "<table class='table table-hover table-striped'>";
+                                        echo "<th>DATELOG</th>";
+                                        echo "<th>DOCUMENT CODE</th>";
+                                        echo "<th>ACTION</th>";
+                                        echo "<th>OFFICE</th>";
+                                        echo "<th>EMPLOYEE</th>";
+                                        echo "<th>REMARKS</th>";
+
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr>";
+                                            echo "<td>" . $row['datelog'] . "</td>";
+                                            echo "<td>" . $row['documentcode'] . "</td>";
+                                            echo "<td>" . $row['action'] . "</td>";
+                                            echo "<td>" . $row['office'] . "</td>";
+                                            echo "<td>" . $row['employee'] . "</td>";
+                                            echo "<td>" . $row['remarks'] . "</td>";
+                                            echo "</tr>";
+                                        }
+
+                                        echo "</ul>";
+                                    } else {
+                                        echo "<p>No results found.</p>";
                                     }
-
-                                    echo "</table>";
-                                } else {
-                                    echo "0 results";
+                                    $conn->close();
                                 }
-
-                                $conn->close();
-                                ?>
+                            ?>
                             </div>
                         </div>
                     </div>
@@ -160,7 +177,7 @@
             </div>
             <footer class="footer">
                 <div class="container-fluid">
-                    <nav> 
+                    <nav>
                         <p class="copyright text-center">
                             ©
                             <script>

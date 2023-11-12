@@ -24,10 +24,10 @@ if (isset($_POST['submit'])) {
     $firstname = $_POST['firstname'];
     $remarks = $_POST['remarks'];
 
-    //Concatenated the lastname and firstname to get the employee name
+    // Concatenate lastname and firstname to get the employee name
     $employee_name = $lastname . ' ' . $firstname;
 
-    //Query to retrieve employee_id based on the concatenated name
+    // Query to retrieve employee_id based on the concatenated name
     $employee_query = "SELECT id FROM employee WHERE CONCAT(lastname, ' ', firstname) = '$employee_name'";
     $employee_result = mysqli_query($conn, $employee_query);
 

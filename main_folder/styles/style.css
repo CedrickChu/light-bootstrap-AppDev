@@ -35,5 +35,7 @@
   .nav-link.active {
     color: #007bff;
   }
+td a:hover{
+  color: red;
 
-  
+}

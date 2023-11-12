@@ -12,12 +12,56 @@
 =========================================================
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  -->
+ <?php
+include "db_conn.php";
+
+if(isset($_GET['edit']) && !empty($_GET['edit'])) {
+    $id = $_GET['edit'];
+
+    $sql = "SELECT
+                t.id,
+                t.datelog,
+                t.documentcode,
+                t.action,
+                o.name as office,
+                e.lastname as lastname,
+                e.firstname as firstname,
+                CONCAT(e.lastname, ' ', e.firstname) as employee,
+                t.remarks
+            FROM recordapp_db.transaction t
+            INNER JOIN recordapp_db.employee e ON t.employee_id = e.id
+            INNER JOIN recordapp_db.office o ON e.office_id = o.id WHERE t.id = $id";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        
+        $documentcode = $row['documentcode'];
+        $action = $row['action'];
+        $office = $row['office']; 
+        $employeeName = $row['employee']; 
+        $remarks = $row['remarks'];
+        $last_name = $row['lastname'];
+        $first_name = $row['firstname'];
+
+    } else {
+        echo "Error: Record not found";
+        exit();
+    }
+} else {
+    echo "Error: ID not provided";
+    exit();
+}
+?>
+
  <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/form.css">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -102,75 +146,127 @@
                 </div>
             </nav>
             <!-- End Navbar -->
-            
             <div class="content">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card strpied-tabled-with-hover">
-                                <div class="card-header ">
-                                    <div class="row">
-                                        <div class="col ">
-                                            <h4 class="card-title">Offices</h4>
-                                        </div>
-                                        <div class="col text-right">
-                                            <a href='add_office.php'>
-                                                <button type="button" class="btn btn-info btn-fill">Add New Office</button>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <p class="card-category">Here is a subtitle for this table</p>
-                                </div>
-                                <?php
-                                include "db_conn.php";
-                                $sql = "SELECT name, contactno, email, address, city, postal FROM records.office";
-                                $result = $conn->query($sql);
-                                echo "<div class='card-body table-full-width table-responsive'>";
-                                echo "<table class='table table-hover table-striped'>";
-                                echo "<th>NAME</th>";
-                                echo "<th>CONTACT NUMBER</th>";
-                                echo "<th>EMAIL</th>";
-                                echo "<th>ADDRESS</th>";
-                                echo "<th>CITY</th>";
-                                echo "<th>POSTAL</th>";
-
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['contactno'] . "</td>";
-                                        echo "<td>" . $row['email'] . "</td>";
-                                        echo "<td>" . $row['address'] . "</td>";
-                                        echo "<td>" . $row['city'] . "</td>";
-                                        echo "<td>" . $row['postal'] . "</td>";
-                                        echo "</tr>";
-                                    }
-
-                                    echo "</table>";
-                                } else {
-                                    echo "0 results";
-                                }
-
-                                $conn->close();
-                                ?>
-                            </div>
-                        </div>
+                <h2>Edit transaction</h2>
+                <form action="" method="post">
+                    <div class="form-group">
+                    <?php
+                        echo "<label for='documentcode'>DOCUMENT CODE: </label>";
+                        echo "<select id='documentcode' name='documentcode' required>";
+                        $selectedDocumentCode = isset($documentcode) ? $documentcode : '';
+                
+                        $documentCodes = [100, 101, 102];
+                        foreach ($documentCodes as $code) {
+                            $selected = ($code == $selectedDocumentCode) ? 'selected' : '';
+                            echo "<option value='$code' $selected>$code</option>";
+                        }
+                        echo "</select>" . "<br>";
+                    echo "</div>";
+                    
+                    echo "<div class='form-group'>";
+                        echo "<label for='action'>ACTION: </label>";
+                        $selectedAction = isset($action) ? $action : '';
+                        $actions = ['IN', 'OUT', 'COMPLETE'];
+                        echo "<select id='action' name='action' required>";
+                            foreach ($actions as $act) {
+                                $selected = ($act == $selectedAction) ? 'selected' : '';
+                                echo "<option value='$act' $selected>$act</option>";
+                            }
+                        echo "</select>" . "<br>";
+                    echo "</div>";
+                    
+                    echo "<div class='form-group'>";
+                        echo "<label for='office'>OFFICE: </label>";
+                        $selectedOffice = isset($office) ? $office : '';
+                        $sql2 = "SELECT name FROM recordapp_db.office WHERE id=3;";
+                        $result2 = $conn->query($sql2);
+                        if ($result2) {
+                            
+                            $row2 = $result2->fetch_assoc();
+                        
+                            $offices = ['Computer Studies Department', 'Creative Code Inc', $row2['name'], 'Office of the President'];
+                        } else {
+                            echo "Error: " . $conn->error;
+                        }
+                        
+                            echo "<select id='office' name='office' required>";
+                            foreach ($offices as $off) {
+                                $selected = ($off == $selectedOffice) ? 'selected' : '';
+                                echo "<option value='$off' $selected>$off</option>";
+                            }
+                    echo "</div>";
+                    echo "</select>" . "<br>";
+                    ?>
+                    <div class="form-group">
+                        <label for="lastname">LAST NAME: </label>
+                        <input type="text" name="lastname" value="<?php echo $last_name; ?>" required><br>
                     </div>
+                    <div class="form-group">
+                        <label for="lastname">FIRST NAME: </label>
+                        <input type="text" name="firstname" value="<?php echo $first_name; ?>" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks">Remarks: </label>
+                        <input type="text" name="remarks" value="<?php echo $remarks; ?>" required><br>
+                    </div>
+                    </div>
+                        <a href="transaction.php">
+                            <button class="button-button" type="submit" name="submit">Submit</button>
+                        </a>
+                    </div>
+                </form>
+                    <?php
+                        ob_start();
+
+                        if (isset($_POST['submit'])) {
+                            $documentcode = $_POST['documentcode'];
+                            $action = $_POST['action'];
+                            $office = $_POST['office'];
+                            $lastname = $_POST['lastname'];
+                            $firstname = $_POST['firstname'];
+                            $remarks = $_POST['remarks'];
+
+                            $updateQuery = "UPDATE recordapp_db.transaction t
+                                            INNER JOIN recordapp_db.employee e ON t.employee_id = e.id
+                                            SET
+                                            t.documentcode = '$documentcode',
+                                            t.action = '$action',
+                                            e.office_id = (SELECT id FROM recordapp_db.office WHERE name = '$office'),
+                                            e.lastname = '$lastname',
+                                            e.firstname = '$firstname',
+                                            t.remarks = '$remarks'
+                                            WHERE t.id = $id";
+
+                            if (mysqli_query($conn, $updateQuery)) {
+                                echo "<script>alert('Transaction record with ID: " . $row['id'] . " has been successfully edited!');</script>";
+
+                                exit();
+                            } else {
+                                echo "<script>alert('Error updating record: " . mysqli_error($conn) . "');</script>";
+                            }
+                        }
+
+                        ob_end_flush();
+                    ?>
+
+
                 </div>
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <nav>
+                            
+                            <p class="copyright text-center">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>
+                                <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
+                            </p>
+                        </nav>
+                    </div>
+                </footer>
             </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <nav> 
-                        <p class="copyright text-center">
-                            ©
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>
-                            <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                        </p>
-                    </nav>
-                </div>
-            </footer>
         </div>
     </div>
     <!--   -->

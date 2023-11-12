@@ -32,6 +32,7 @@
     <link href="../assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../assets/css/demo.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -66,7 +67,6 @@
   <path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z" clip-rule="evenodd" />
   <path d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z" />
 </svg>
-
                             <p>Employee</p>
                         </a>
                     </li>
@@ -89,17 +89,25 @@
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <ul class="nav navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#pablo">
-                                    <span class="no-icon">Log out</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pablo">
+                                <span class="no-icon">Log out</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <form id="searchForm" class="form-inline my-2 my-lg-0" method="GET" action="search_transaction.php">
+                        <input class="form-control mr-sm-2" type="search" name="search" id="searchInput" placeholder="Search" aria-label="Search" style="border: 2px solid #808080;">
+                        <button class="btn btn-info btn-fill my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                                       
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -116,15 +124,18 @@
                                         </div>
                                         <div class="col text-right">
                                             <a href='add_transaction.php'>
-                                                <button type="button" class="btn btn-info btn-fill">Add New Transaction</button>
+                                                <button type="button" class="btn btn-info btn-fill">Add New Transaction</button>                                    
                                             </a>
+                                            <button type="button" class="btn btn-info btn-fill" onclick="toggleEditLinks()">Edit transaction</button>
                                         </div>
                                     </div>
                                     <p class="card-category">Here is a subtitle for this table</p>
                                 </div>
                                 <?php
                                 include "db_conn.php";
+
                                 $sql = "SELECT
+                                            t.id,
                                             t.datelog,
                                             t.documentcode,
                                             t.action,
@@ -138,38 +149,52 @@
                                 $result = $conn->query($sql);
 
                                 echo "<div class='card-body table-full-width table-responsive'>";
-                                echo "<table class='table table-hover table-striped'>";
+                                echo "<table  id='transaction-table' class='table table-hover table-striped'>";
                                 echo "<th>DATELOG</th>";
                                 echo "<th>DOCUMENT CODE</th>";
                                 echo "<th>ACTION</th>";
                                 echo "<th>OFFICE</th>";
                                 echo "<th>EMPLOYEE</th>";
                                 echo "<th>REMARKS</th>";
+                                
 
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
+                                        echo "<tr class='transaction-row'>";
                                         echo "<td>" . $row['datelog'] . "</td>";
                                         echo "<td>" . $row['documentcode'] . "</td>";
                                         echo "<td>" . $row['action'] . "</td>";
                                         echo "<td>" . $row['office'] . "</td>";
                                         echo "<td>" . $row['employee'] . "</td>";
                                         echo "<td>" . $row['remarks'] . "</td>";
+                                        echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_transaction.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
                                         echo "</tr>";
                                     }
-
+                                
                                     echo "</table>";
                                 } else {
                                     echo "0 results";
                                 }
+                                
 
                                 $conn->close();
                                 ?>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <script>
+                function toggleEditLinks() {
+                    var editLinks = document.getElementsByClassName('edit-link');
+
+                    for (var i = 0; i < editLinks.length; i++) {
+                        editLinks[i].style.display = (editLinks[i].style.display === 'none' || editLinks[i].style.display === '') ? 'table-cell' : 'none';
+                    }
+                }
+            </script>
+
             <footer class="footer">
                 <div class="container-fluid">
                     <nav>
@@ -265,6 +290,7 @@
 </div>
  -->
 </body>
+
 <!--   Core JS Files   -->
 <script src="../assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
 <script src="../assets/js/core/popper.min.js" type="text/javascript"></script>
