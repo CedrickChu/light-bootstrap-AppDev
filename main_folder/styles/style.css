@@ -36,6 +36,9 @@
     color: #007bff;
   }
 td a:hover{
-  color: red;
+  color: #4C5270;
 
+}
+button:hover{
+  background-color: #4C5270!important ;
 }
