@@ -36,7 +36,6 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
 
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
-        
         $documentcode = $row['documentcode'];
         $action = $row['action'];
         $office = $row['office']; 
@@ -217,8 +216,6 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
                     </div>
                 </form>
                     <?php
-                        ob_start();
-
                         if (isset($_POST['submit'])) {
                             $documentcode = $_POST['documentcode'];
                             $action = $_POST['action'];
@@ -246,8 +243,6 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
                                 echo "<script>alert('Error updating record: " . mysqli_error($conn) . "');</script>";
                             }
                         }
-
-                        ob_end_flush();
                     ?>
 
 

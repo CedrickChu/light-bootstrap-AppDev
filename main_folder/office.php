@@ -115,15 +115,16 @@
                                         </div>
                                         <div class="col text-right">
                                             <a href='add_office.php'>
-                                                <button type="button" class="btn btn-info btn-fill">Add New Office</button>
+                                                <button type="button" class="btn btn-info btn-fill">Add New Office</button>                                    
                                             </a>
+                                            <button type="button" class="btn btn-info btn-fill" onclick="toggleEditLinks()">Edit Office</button>
                                         </div>
                                     </div>
                                     <p class="card-category">Here is a subtitle for this table</p>
                                 </div>
                                 <?php
                                 include "db_conn.php";
-                                $sql = "SELECT name, contactno, email, address, city, postal FROM records.office";
+                                $sql = "SELECT name, id, contactnum, email, address, city, postal FROM recordapp_db.office";
                                 $result = $conn->query($sql);
                                 echo "<div class='card-body table-full-width table-responsive'>";
                                 echo "<table class='table table-hover table-striped'>";
@@ -133,16 +134,18 @@
                                 echo "<th>ADDRESS</th>";
                                 echo "<th>CITY</th>";
                                 echo "<th>POSTAL</th>";
-
+                                
+                                      
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr>";
                                         echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['contactno'] . "</td>";
+                                        echo "<td>" . $row['contactnum'] . "</td>";
                                         echo "<td>" . $row['email'] . "</td>";
                                         echo "<td>" . $row['address'] . "</td>";
                                         echo "<td>" . $row['city'] . "</td>";
                                         echo "<td>" . $row['postal'] . "</td>";
+                                        echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_office.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
                                         echo "</tr>";
                                     }
 
@@ -158,6 +161,15 @@
                     </div>
                 </div>
             </div>
+            <script>
+                function toggleEditLinks() {
+                    var editLinks = document.getElementsByClassName('edit-link');
+
+                    for (var i = 0; i < editLinks.length; i++) {
+                        editLinks[i].style.display = (editLinks[i].style.display === 'none' || editLinks[i].style.display === '') ? 'table-cell' : 'none';
+                    }
+                }
+            </script>
             <footer class="footer">
                 <div class="container-fluid">
                     <nav> 

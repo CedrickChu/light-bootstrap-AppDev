@@ -14,26 +14,35 @@
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  -->
  <?php
 include "db_conn.php";
-if (isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    $contactno = $_POST['contactnum'];
-    $email = $_POST['email'];
-    $address = $_POST['address'];
-    $city = $_POST['city'];
-    $postal = $_POST['postal'];
 
-    $sql = "INSERT INTO office(name, contactnum, email, address, city, postal)
-            VALUES ('$name', '$contactno', '$email', '$address', '$city', '$postal')";
+if (isset($_GET['edit']) && !empty($_GET['edit'])) {
+    $id = $_GET['edit'];
 
-    if (mysqli_query($conn, $sql)) {
-        header("Location: office.php");
-        exit();
+    $sql = "SELECT id, name, contactnum, email, address, city, country, postal FROM recordapp_db.office WHERE id = $id";
+    
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $id = $row['id'];
+        $office = $row['name'];
+        $contactnum = $row['contactnum'];
+        $address = $row['address'];
+        $email = $row['email']; 
+        $city = $row['city']; 
+        $postal = $row['postal'];
+
+
     } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        echo "Error: Record not found";
+        exit();
     }
-    mysqli_close($conn);
+} else {
+    echo "Error: ID not provided";
+    exit();
 }
 ?>
+
  <!DOCTYPE html>
 <html lang="en">
 
@@ -127,41 +136,73 @@ if (isset($_POST['submit'])) {
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
-                <h2>Add New Office Form</h2>
-                    <form action="" method="post">
-                        <div class="form-group">
-                            <label for="name">Office Name:</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="contactno">Contact Number:</label>
-                            <input type="text" id="contactno" name="contactno" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="text" id="email" name="email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="address">Address:</label>
-                            <input type="text" id="address" name="address" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="city">City:</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="postal">Postal:</label>
-                            <input type="text" id="postal" name="postal" required>
-                        </div>
-
-                        <button class="button-button" type="submit" name="submit">Submit</button>
-                    </form>
+                <h2>Edit Office</h2>
+                <form action="" method="post">
+                    <div class="form-group">
+                        <label for="lastname">OFFICE NAME: </label>
+                        <input type="text" name="name" value="<?php echo $office; ?>" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname">CONTACT NUMBER: </label>
+                        <input type="text" name="contactnum" value="<?php echo $contactnum; ?>" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks">EMAIL: </label>
+                        <input type="text" name="email" value="<?php echo $email; ?>" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks">ADDRESS: </label>
+                        <input type="text" name="address" value="<?php echo $address; ?>" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks">CITY: </label>
+                        <input type="text" name="city" value="<?php echo $city; ?>" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks">POSTAL: </label>
+                        <input type="text" name="postal" value="<?php echo $postal; ?>" required><br>
+                    </div>
+                    </div>
+                        <a href="transaction.php">
+                            <button class="button-button" type="submit" name="submit">Submit</button>
+                        </a>
+                    </div>
                 </div>
+                <?php
+                if (isset($_POST['submit'])) {
+
+                    $office = mysqli_real_escape_string($conn, $_POST['name']);
+                    $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
+                    $address = mysqli_real_escape_string($conn, $_POST['address']);
+                    $email = mysqli_real_escape_string($conn, $_POST['email']);
+                    $city = mysqli_real_escape_string($conn, $_POST['city']);
+                    $postal = mysqli_real_escape_string($conn, $_POST['postal']);
+
+
+                    $updateQuery = "UPDATE recordapp_db.office
+                                    SET
+                                    name = ?,
+                                    contactnum = ?,
+                                    address = ?,
+                                    email = ?,
+                                    city = ?,
+                                    postal = ?
+                                    WHERE id = ?";
+
+                    $stmt = $conn->prepare($updateQuery);
+                    $stmt->bind_param("ssssssi", $office, $contactnum, $address, $email, $city, $postal, $id);
+
+                    if ($stmt->execute()) {
+                        echo "<script>alert('Office record with ID: " . $row['id'] . " has been successfully edited!');</script>";
+                        exit();
+                    } else {
+                        echo "<script>alert('Error updating record: " . $stmt->error . "');</script>";
+                    }
+
+                    $stmt->close();
+                }
+                ?>
+
                 <footer class="footer">
                     <div class="container-fluid">
                         <nav>
