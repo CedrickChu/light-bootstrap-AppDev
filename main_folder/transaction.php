@@ -148,7 +148,7 @@
                                 $result = $conn->query($sql);
                                 echo "<div class='card-body table-full-width table-responsive'>";
                                 echo "<table  id='transaction-table' class='table table-hover table-striped'>";
-                                    echo "<thead";
+                                    echo "<thead>";
                                         echo "<tr>";
                                             echo "<th>DATELOG</th>";
                                             echo "<th>DOCUMENT CODE</th>";
@@ -159,30 +159,29 @@
                                             echo "<th class='edit-link' style='display: none;'>EDIT</th>";
                                         echo "</tr>";
                                     echo "</thead>";
-                
-                                
-                                    echo "<body id='myTable'>";
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<tr class='transaction-row'>";
-                                            echo "<td>" . $row['datelog'] . "</td>";
-                                            echo "<td>" . $row['documentcode'] . "</td>";
-                                            echo "<td>" . $row['action'] . "</td>";
-                                            echo "<td>" . $row['office'] . "</td>";
-                                            echo "<td>" . $row['employee'] . "</td>";
-                                            echo "<td>" . $row['remarks'] . "</td>";
-                                            echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_transaction.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
-                                            echo "</tr>";
-                                        }
-                                        echo "</table>";
-                                    } else {
-                                        echo "0 results";
-                                    }
                             
-                                    $conn->close();
-                                    ?>
-                                    </tbody>
-                                </table>
+                            echo "<tbody id='myTable'>";
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr class='transaction-row'>";
+                                    echo "<td>" . $row['datelog'] . "</td>";
+                                    echo "<td>" . $row['documentcode'] . "</td>";
+                                    echo "<td>" . $row['action'] . "</td>";
+                                    echo "<td>" . $row['office'] . "</td>";
+                                    echo "<td>" . $row['employee'] . "</td>";
+                                    echo "<td>" . $row['remarks'] . "</td>";
+                                    echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_transaction.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>"; // Add this line to close the <tbody> tag
+                                echo "</table>";
+                            } else {
+                                echo "0 results";
+                            }
+                            
+                            $conn->close();
+                            ?>
+                            
                             </div>
 
                         </div>
@@ -199,7 +198,7 @@
                     }
                 }
             </script>
-            
+
             <!-- script for search function -->
             <script>
                 $(document).ready(function(){

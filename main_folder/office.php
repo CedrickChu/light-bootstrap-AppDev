@@ -128,6 +128,7 @@
                                 $result = $conn->query($sql);
                                 echo "<div class='card-body table-full-width table-responsive'>";
                                 echo "<table class='table table-hover table-striped'>";
+                                echo "<thead>";
                                     echo "<th>NAME</th>";
                                     echo "<th>CONTACT NUMBER</th>";
                                     echo "<th>EMAIL</th>";
@@ -135,8 +136,8 @@
                                     echo "<th>CITY</th>";
                                     echo "<th>POSTAL</th>";
                                     echo "<th class='edit-link' style='display: none;'>EDIT</th>";
-                                
-                                      
+                                echo "</thead";
+                                echo "<tbody>";
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr>";
@@ -149,14 +150,15 @@
                                         echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_office.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
                                         echo "</tr>";
                                     }
-
+                                    echo "</tbody>";
                                     echo "</table>";
+                                    
                                 } else {
                                     echo "0 results";
                                 }
-
                                 $conn->close();
                                 ?>
+                                
                             </div>
                         </div>
                     </div>
