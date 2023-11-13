@@ -18,6 +18,7 @@
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/form.css">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -31,6 +32,7 @@
     <link href="../assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../assets/css/demo.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -99,6 +101,9 @@
                             </li>
                         </ul>
                     </div>
+                    <div id="searchForm" class="form-inline my-2 my-lg-0">
+                        <input class="form-control" id="office_input" type="text" placeholder="Search.."style="border: 2px solid #808080;">
+                    </div>
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -120,34 +125,37 @@
                                             <button type="button" class="btn btn-info btn-fill" onclick="toggleEditLinks()">Edit Office</button>
                                         </div>
                                     </div>
-                                    <p class="card-category">Here is a subtitle for this table</p>
+                                    
                                 </div>
                                 <?php
                                 include "db_conn.php";
                                 $sql = "SELECT name, id, contactnum, email, address, city, postal FROM recordapp_db.office";
                                 $result = $conn->query($sql);
                                 echo "<div class='card-body table-full-width table-responsive'>";
-                                echo "<table class='table table-hover table-striped'>";
+                                echo "<table  id='office-table' class='table table-hover table-striped'>";
                                 echo "<thead>";
-                                    echo "<th>NAME</th>";
-                                    echo "<th>CONTACT NUMBER</th>";
-                                    echo "<th>EMAIL</th>";
-                                    echo "<th>ADDRESS</th>";
-                                    echo "<th>CITY</th>";
-                                    echo "<th>POSTAL</th>";
-                                    echo "<th class='edit-link' style='display: none;'>EDIT</th>";
+                                    echo "<tr>";
+                                        echo "<th>NAME</th>";
+                                        echo "<th>CONTACT NUMBER</th>";
+                                        echo "<th>EMAIL</th>";
+                                        echo "<th>ADDRESS</th>";
+                                        echo "<th>CITY</th>";
+                                        echo "<th>POSTAL</th>";
+                                        echo "<th class='edit-link' style='display: none;'>EDIT</th>";
+                                    echo "</tr>";
                                 echo "</thead";
-                                echo "<tbody>";
+                                
+                                echo "<tbody id='office-table'>";
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['contactnum'] . "</td>";
-                                        echo "<td>" . $row['email'] . "</td>";
-                                        echo "<td>" . $row['address'] . "</td>";
-                                        echo "<td>" . $row['city'] . "</td>";
-                                        echo "<td>" . $row['postal'] . "</td>";
-                                        echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_office.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
+                                        echo "<tr class='office-row'>";
+                                            echo "<td>" . $row['name'] . "</td>";
+                                            echo "<td>" . $row['contactnum'] . "</td>";
+                                            echo "<td>" . $row['email'] . "</td>";
+                                            echo "<td>" . $row['address'] . "</td>";
+                                            echo "<td>" . $row['city'] . "</td>";
+                                            echo "<td>" . $row['postal'] . "</td>";
+                                            echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_office.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
                                         echo "</tr>";
                                     }
                                     echo "</tbody>";
@@ -158,12 +166,12 @@
                                 }
                                 $conn->close();
                                 ?>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+             <!-- script for edit function -->
             <script>
                 function toggleEditLinks() {
                     var editLinks = document.getElementsByClassName('edit-link');
@@ -173,6 +181,19 @@
                     }
                 }
             </script>
+
+            <!-- script for search function -->
+            <script>
+                $(document).ready(function(){
+                $("#office_input").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#office-table tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+                });
+            </script>
+
             <footer class="footer">
                 <div class="container-fluid">
                     <nav> 

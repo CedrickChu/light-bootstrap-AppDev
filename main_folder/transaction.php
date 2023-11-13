@@ -103,9 +103,9 @@
                             </a>
                         </li>
                     </ul>
-                    <form id="searchForm" class="form-inline my-2 my-lg-0" method="GET" action="search_transaction.php">
-                        <input class="form-control search-highlight" id="myInput" type="text" placeholder="Search.." aria-label="Search" style="border: 2px solid #808080;">
-                    </form>
+                    <div id="searchForm" class="form-inline my-2 my-lg-0">
+                        <input class="form-control" id="myInput" type="text" placeholder="Search.."style="border: 2px solid #808080;">
+                    </div>
                                        
                 </div>
             </nav>
@@ -128,7 +128,7 @@
                                             <button type="button" class="btn btn-info btn-fill" onclick="toggleEditLinks()">Edit Transaction</button>
                                         </div>
                                     </div>
-                                    <p class="card-category">Here is a subtitle for this table</p>
+                                    
                                 </div>
                                 <?php
                                 include "db_conn.php";
@@ -160,7 +160,7 @@
                                         echo "</tr>";
                                     echo "</thead>";
                             
-                            echo "<tbody id='myTable'>";
+                            echo "<tbody id='transaction-table'>";
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     echo "<tr class='transaction-row'>";
@@ -173,7 +173,7 @@
                                     echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_transaction.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
                                     echo "</tr>";
                                 }
-                                echo "</tbody>"; // Add this line to close the <tbody> tag
+                                echo "</tbody>"; 
                                 echo "</table>";
                             } else {
                                 echo "0 results";
@@ -202,12 +202,12 @@
             <!-- script for search function -->
             <script>
                 $(document).ready(function(){
-                    $("#myInput").on("keyup", function() {
-                        var value = $(this).val().toLowerCase();
-                        $("#transaction-table tbody tr").filter(function() {
-                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                        });
+                $("#myInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#transaction-table tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
+                });
                 });
             </script>
 
