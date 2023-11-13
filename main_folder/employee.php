@@ -114,8 +114,9 @@
                                         </div>
                                         <div class="col text-right">
                                             <a href='add_employee.php'>
-                                                <button type="button" class="btn btn-info btn-fill">Add New Employee</button>
+                                                <button type="button" class="btn btn-info btn-fill">Add New Employee</button>                                    
                                             </a>
+                                            <button type="button" class="btn btn-info btn-fill" onclick="toggleEditLinks()">Edit Employee</button>
                                         </div>
                                     </div>
                                     <p class="card-category">Here is a subtitle for this table</p>
@@ -123,6 +124,7 @@
                                 <?php
                                 include "db_conn.php";
                                 $sql = "SELECT
+                                            e.id,
                                             e.lastname,
                                             e.firstname,
                                             e.address,
@@ -138,6 +140,8 @@
                                 echo "<th>FIRST NAME</th>";
                                 echo "<th>ADDRESS</th>";
                                 echo "<th>OFFICE</th>";
+                                echo "<th class='edit-link' style='display: none;'>EDIT</th>";
+                                
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr>";
@@ -145,6 +149,7 @@
                                         echo "<td>" . $row['firstname'] . "</td>";
                                         echo "<td>" . $row['address'] . "</td>";
                                         echo "<td>" . $row['office'] . "</td>";
+                                        echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_employee.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
                                         echo "</tr>";
                                     }
 
@@ -155,8 +160,16 @@
 
                                 $conn->close();
                                 ?>
-
                             </div>
+                            <script>
+                                function toggleEditLinks() {
+                                    var editLinks = document.getElementsByClassName('edit-link');
+
+                                    for (var i = 0; i < editLinks.length; i++) {
+                                        editLinks[i].style.display = (editLinks[i].style.display === 'none' || editLinks[i].style.display === '') ? 'table-cell' : 'none';
+                                    }
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -174,6 +187,7 @@
                     </nav>
                 </div>
             </footer>
+            
         </div>
     </div>
     <!--   -->

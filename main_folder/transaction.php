@@ -104,8 +104,7 @@
                         </li>
                     </ul>
                     <form id="searchForm" class="form-inline my-2 my-lg-0" method="GET" action="search_transaction.php">
-                        <input class="form-control mr-sm-2" type="search" name="search" id="searchInput" placeholder="Search" aria-label="Search" style="border: 2px solid #808080;">
-                        <button class="btn btn-info btn-fill my-2 my-sm-0" type="submit">Search</button>
+                        <input class="form-control search-highlight" id="myInput" type="text" placeholder="Search.." aria-label="Search" style="border: 2px solid #808080;">
                     </form>
                                        
                 </div>
@@ -126,7 +125,7 @@
                                             <a href='add_transaction.php'>
                                                 <button type="button" class="btn btn-info btn-fill">Add New Transaction</button>                                    
                                             </a>
-                                            <button type="button" class="btn btn-info btn-fill" onclick="toggleEditLinks()">Edit transaction</button>
+                                            <button type="button" class="btn btn-info btn-fill" onclick="toggleEditLinks()">Edit Transaction</button>
                                         </div>
                                     </div>
                                     <p class="card-category">Here is a subtitle for this table</p>
@@ -147,44 +146,50 @@
                                         INNER JOIN recordapp_db.office o ON e.office_id = o.id";
 
                                 $result = $conn->query($sql);
-
                                 echo "<div class='card-body table-full-width table-responsive'>";
                                 echo "<table  id='transaction-table' class='table table-hover table-striped'>";
-                                echo "<th>DATELOG</th>";
-                                echo "<th>DOCUMENT CODE</th>";
-                                echo "<th>ACTION</th>";
-                                echo "<th>OFFICE</th>";
-                                echo "<th>EMPLOYEE</th>";
-                                echo "<th>REMARKS</th>";
-                                
-
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr class='transaction-row'>";
-                                        echo "<td>" . $row['datelog'] . "</td>";
-                                        echo "<td>" . $row['documentcode'] . "</td>";
-                                        echo "<td>" . $row['action'] . "</td>";
-                                        echo "<td>" . $row['office'] . "</td>";
-                                        echo "<td>" . $row['employee'] . "</td>";
-                                        echo "<td>" . $row['remarks'] . "</td>";
-                                        echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_transaction.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
+                                    echo "<thead";
+                                        echo "<tr>";
+                                            echo "<th>DATELOG</th>";
+                                            echo "<th>DOCUMENT CODE</th>";
+                                            echo "<th>ACTION</th>";
+                                            echo "<th>OFFICE</th>";
+                                            echo "<th>EMPLOYEE</th>";
+                                            echo "<th>REMARKS</th>";
+                                            echo "<th class='edit-link' style='display: none;'>EDIT</th>";
                                         echo "</tr>";
+                                    echo "</thead>";
+                
+                                
+                                    echo "<body id='myTable'>";
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr class='transaction-row'>";
+                                            echo "<td>" . $row['datelog'] . "</td>";
+                                            echo "<td>" . $row['documentcode'] . "</td>";
+                                            echo "<td>" . $row['action'] . "</td>";
+                                            echo "<td>" . $row['office'] . "</td>";
+                                            echo "<td>" . $row['employee'] . "</td>";
+                                            echo "<td>" . $row['remarks'] . "</td>";
+                                            echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_transaction.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
+                                            echo "</tr>";
+                                        }
+                                        echo "</table>";
+                                    } else {
+                                        echo "0 results";
                                     }
-                                
-                                    echo "</table>";
-                                } else {
-                                    echo "0 results";
-                                }
-                                
-
-                                $conn->close();
-                                ?>
-
+                            
+                                    $conn->close();
+                                    ?>
+                                    </tbody>
+                                </table>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- script for edit function -->
             <script>
                 function toggleEditLinks() {
                     var editLinks = document.getElementsByClassName('edit-link');
@@ -193,6 +198,18 @@
                         editLinks[i].style.display = (editLinks[i].style.display === 'none' || editLinks[i].style.display === '') ? 'table-cell' : 'none';
                     }
                 }
+            </script>
+            
+            <!-- script for search function -->
+            <script>
+                $(document).ready(function(){
+                    $("#myInput").on("keyup", function() {
+                        var value = $(this).val().toLowerCase();
+                        $("#transaction-table tbody tr").filter(function() {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                });
             </script>
 
             <footer class="footer">

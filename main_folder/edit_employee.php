@@ -12,6 +12,39 @@
 =========================================================
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  -->
+ <?php
+include "db_conn.php";
+
+if (isset($_GET['edit']) && !empty($_GET['edit'])) {
+    $id = $_GET['edit'];
+
+    $sql = "SELECT
+                e.id,
+                e.lastname,
+                e.firstname,
+                e.address,
+                o.name as office
+            FROM recordapp_db.employee e
+            INNER JOIN recordapp_db.office o ON e.office_id = o.id
+            WHERE e.id = $id"; 
+
+    $result = $conn->query($sql);
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $id = $row['id'];  
+        $lastname = $row['lastname'];
+        $firstname = $row['firstname'];
+        $address = $row['address'];
+        $office = $row['office'];
+    } else {
+        echo "Error: Record not found";
+        exit();
+    }
+} else {
+    echo "Error: ID not provided";
+    exit();
+}
+?>
  <!DOCTYPE html>
 <html lang="en">
 
@@ -89,105 +122,102 @@
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#pablo">
-                                <span class="no-icon">Log out</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <form id="searchForm" class="form-inline my-2 my-lg-0" method="GET" action="search_transaction.php">
-                        <input class="form-control mr-sm-2" type="search" name="search" id="searchInput" placeholder="Search" aria-label="Search" style="border: 2px solid #808080;">
-                        <button class="btn  my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                                       
+            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <ul class="nav navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#pablo">
+                                    <span class="no-icon">Log out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
             <!-- End Navbar -->
-            
+
             <div class="content">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card strpied-tabled-with-hover">
-                                <div class="card-header ">
-                                    <h1 class="card-title">Search Results: </h1>
-                                </div>
-                                <?php
-                                include "db_conn.php";
-
-                                $sql = "SELECT
-                                            t.datelog,
-                                            t.documentcode,
-                                            t.action,
-                                            o.name as office,
-                                            CONCAT(e.lastname, ' ', e.firstname) as employee,
-                                            t.remarks
-                                        FROM recordapp_db.transaction t
-                                        INNER JOIN recordapp_db.employee e ON t.employee_id = e.id
-                                        INNER JOIN recordapp_db.office o ON e.office_id = o.id";
-
-                                if (isset($_GET['search'])) {
-                                    $searchTerm = $_GET['search'];
-
-                                    // Modify the SQL query to include the search condition
-                                    $sql .= " WHERE t.datelog LIKE '%$searchTerm%' OR t.documentcode LIKE '%$searchTerm%' OR t.action LIKE '%$searchTerm%' OR o.name LIKE '%$searchTerm%' OR CONCAT(e.lastname, ' ', e.firstname) LIKE '%$searchTerm%' OR t.remarks LIKE '%$searchTerm%'";
-
-                                    $result = $conn->query($sql);
-
-                                    if ($result->num_rows > 0) {
-                                        echo "<div class='card-body table-full-width table-responsive'>";
-                                        echo "<table class='table table-hover table-striped'>";
-                                        echo "<th>DATELOG</th>";
-                                        echo "<th>DOCUMENT CODE</th>";
-                                        echo "<th>ACTION</th>";
-                                        echo "<th>OFFICE</th>";
-                                        echo "<th>EMPLOYEE</th>";
-                                        echo "<th>REMARKS</th>";
-
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<tr>";
-                                            echo "<td>" . $row['datelog'] . "</td>";
-                                            echo "<td>" . $row['documentcode'] . "</td>";
-                                            echo "<td>" . $row['action'] . "</td>";
-                                            echo "<td>" . $row['office'] . "</td>";
-                                            echo "<td>" . $row['employee'] . "</td>";
-                                            echo "<td>" . $row['remarks'] . "</td>";
-                                            echo "</tr>";
-                                        }
-
-                                        echo "</ul>";
-                                    } else {
-                                        echo "<p>No results found.</p>";
-                                    }
-                                    $conn->close();
-                                }
-                            ?>
-                            </div>
+                    <h2>Edit Employee</h2>
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="lastname">LAST NAME: </label>
+                            <input type="text" name="lastname" value="<?php echo $lastname; ?>" required><br>
                         </div>
+                        <div class="form-group">
+                                <label for="firstname">FIRST NAME: </label>
+                                <input type="text" name="firstname" value="<?php echo $firstname; ?>" required><br>
+                        </div>
+                        <div class="form-group">
+                                <label for="remarks">ADDRESS: </label>
+                                <input type="text" name="address" value="<?php echo $address; ?>" required><br>
+                        </div>
+                        <?php
+                            echo "<div class='form-group'>";
+                            echo "<label for='office'>OFFICE: </label>";
+                            $selectedOffice = isset($office) ? $office : '';
+                            $sql2 = "SELECT name FROM recordapp_db.office WHERE id=3;";
+                            $result2 = $conn->query($sql2);
+                            if ($result2) {
+                                $row2 = $result2->fetch_assoc();
+                                $offices = ['Computer Studies Department', 'Creative Code Inc', $row2['name'], 'Office of the President'];
+                            } else {
+                                echo "Error: " . $conn->error;
+                            }
+                            
+                                echo "<select id='office' name='office' required>";
+                                foreach ($offices as $off) {
+                                    $selected = ($off == $selectedOffice) ? 'selected' : '';
+                                    echo "<option value='$off' $selected>$off</option>";
+                                }
+                            echo "</div>";
+                            echo "</select>" . "<br>";
+                        ?>
+                        <div>
+                            <a href="employee.php">
+                                <button class="button-button" type="submit" name="submit">Submit</button>
+                            </a>
+                        </div>
+                    </form>
+                    <?php
+                    if (isset($_POST['submit'])) {
+                        $lastname = mysqli_real_escape_string($conn, $_POST['lastname']);
+                        $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+                        $address = mysqli_real_escape_string($conn, $_POST['address']);
+                        $office = mysqli_real_escape_string($conn, $_POST['office']);
+
+                        $updateQuery = "UPDATE recordapp_db.employee e
+                                        INNER JOIN recordapp_db.office o ON o.id = e.office_id
+                                        SET
+                                        e.lastname = '$lastname',
+                                        e.firstname = '$firstname',
+                                        e.address = '$address', 
+                                        e.office_id = (SELECT id FROM recordapp_db.office WHERE name = '$office' LIMIT 1)
+                                        WHERE e.id = $id";
+
+                        if (mysqli_query($conn, $updateQuery)) {
+                            echo "<script>alert('Employee record with ID: " . $row['id'] . " has been successfully edited!');</script>";
+                            exit();
+                        } else {
+                            echo "<script>alert('Error updating record: " . mysqli_error($conn) . "');</script>";
+                        }
+                    }
+                    ?>
+                <footer class="footer fixed-bottom" style="z-index: -9999;">
+                    <div class="container-fluid">
+                        <nav>
+                            <p class="copyright text-center">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>
+                                <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
+                            </p>
+                        </nav>
                     </div>
-                </div>
+                </footer>
             </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <nav>
-                        <p class="copyright text-center">
-                            ©
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>
-                            <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                        </p>
-                    </nav>
-                </div>
-            </footer>
         </div>
     </div>
     <!--   -->

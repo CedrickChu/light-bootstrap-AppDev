@@ -128,12 +128,13 @@
                                 $result = $conn->query($sql);
                                 echo "<div class='card-body table-full-width table-responsive'>";
                                 echo "<table class='table table-hover table-striped'>";
-                                echo "<th>NAME</th>";
-                                echo "<th>CONTACT NUMBER</th>";
-                                echo "<th>EMAIL</th>";
-                                echo "<th>ADDRESS</th>";
-                                echo "<th>CITY</th>";
-                                echo "<th>POSTAL</th>";
+                                    echo "<th>NAME</th>";
+                                    echo "<th>CONTACT NUMBER</th>";
+                                    echo "<th>EMAIL</th>";
+                                    echo "<th>ADDRESS</th>";
+                                    echo "<th>CITY</th>";
+                                    echo "<th>POSTAL</th>";
+                                    echo "<th class='edit-link' style='display: none;'>EDIT</th>";
                                 
                                       
                                 if ($result->num_rows > 0) {

@@ -42,3 +42,6 @@ td a:hover{
 button:hover{
   background-color: #4C5270!important ;
 }
+.content{
+    z-index: -2;
+}

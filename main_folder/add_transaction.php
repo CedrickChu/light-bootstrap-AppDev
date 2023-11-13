@@ -200,10 +200,9 @@ if (isset($_POST['submit'])) {
                         <button class="button-button" type="submit" name="submit">Submit</button>
                     </form>
                 </div>
-                <footer class="footer">
+                <footer class="footer fixed-bottom" style="z-index: -9999;">
                     <div class="container-fluid">
                         <nav>
-                            
                             <p class="copyright text-center">
                                 ©
                                 <script>

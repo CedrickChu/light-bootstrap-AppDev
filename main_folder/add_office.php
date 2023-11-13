@@ -162,7 +162,7 @@ if (isset($_POST['submit'])) {
                         <button class="button-button" type="submit" name="submit">Submit</button>
                     </form>
                 </div>
-                <footer class="footer">
+                <footer class="footer fixed-bottom" style="z-index: -999;";>
                     <div class="container-fluid">
                         <nav>
                             

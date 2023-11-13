@@ -138,10 +138,30 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                 <div class="container-fluid">
                 <h2>Edit Office</h2>
                 <form action="" method="post">
-                    <div class="form-group">
-                        <label for="lastname">OFFICE NAME: </label>
-                        <input type="text" name="name" value="<?php echo $office; ?>" required><br>
-                    </div>
+                    <?php
+                        echo "<div class='form-group'>";
+                        echo "<label for='office'>OFFICE: </label>";
+                        $selectedOffice = isset($office) ? $office : '';
+                        $sql2 = "SELECT name FROM recordapp_db.office WHERE id=3;";
+                        $result2 = $conn->query($sql2);
+                        if ($result2) {
+                            
+                            $row2 = $result2->fetch_assoc();
+                        
+                            $offices = ['Computer Studies Department', 'Creative Code Inc', $row2['name'], 'Office of the President'];
+                        } else {
+                            echo "Error: " . $conn->error;
+                        }
+                        
+                            echo "<select id='office' name='office' required>";
+                            foreach ($offices as $off) {
+                                $selected = ($off == $selectedOffice) ? 'selected' : '';
+                                echo "<option value='$off' $selected>$off</option>";
+                            }
+                        echo "</div>";
+                        echo "</select>" . "<br>";
+                    ?>
+                    
                     <div class="form-group">
                         <label for="lastname">CONTACT NUMBER: </label>
                         <input type="text" name="contactnum" value="<?php echo $contactnum; ?>" required><br>
@@ -162,23 +182,20 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                         <label for="remarks">POSTAL: </label>
                         <input type="text" name="postal" value="<?php echo $postal; ?>" required><br>
                     </div>
-                    </div>
-                        <a href="transaction.php">
+                    <div>
+                        <a href="office.php">
                             <button class="button-button" type="submit" name="submit">Submit</button>
                         </a>
                     </div>
-                </div>
+                </form>
                 <?php
                 if (isset($_POST['submit'])) {
-
-                    $office = mysqli_real_escape_string($conn, $_POST['name']);
+                    $office = mysqli_real_escape_string($conn, $_POST['office']);
                     $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
                     $address = mysqli_real_escape_string($conn, $_POST['address']);
                     $email = mysqli_real_escape_string($conn, $_POST['email']);
                     $city = mysqli_real_escape_string($conn, $_POST['city']);
                     $postal = mysqli_real_escape_string($conn, $_POST['postal']);
-
-
                     $updateQuery = "UPDATE recordapp_db.office
                                     SET
                                     name = ?,
@@ -202,11 +219,9 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                     $stmt->close();
                 }
                 ?>
-
-                <footer class="footer">
+                <footer class="footer fixed-bottom" style="z-index: -9999;">
                     <div class="container-fluid">
                         <nav>
-                            
                             <p class="copyright text-center">
                                 ©
                                 <script>
