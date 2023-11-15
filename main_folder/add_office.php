@@ -62,14 +62,16 @@ if (isset($_POST['submit'])) {
 <body>
     <div class="wrapper">
         <!-- sidebar start-->
-        <div id="sidebarContainer"></div>
-            <!-- sidebar end-->
-            
+        <div class="sidebar-wrapper">
+                <?php include './template/sidebar.html'; ?>
+        </div>
+        <!-- sidebar end-->
+        
         <div class="main-panel">
-                <!-- navbar start-->
-            <div id="navbarContainer"></div>
+            <!-- navbar start-->
+            <?php include "./template/navbar.html"; ?>
                 <!-- navbar end-->
-            <!-- End Navbar -->
+       
             <div class="content">
                 <div class="container-fluid">
                 <h2>Add New Office Form</h2>

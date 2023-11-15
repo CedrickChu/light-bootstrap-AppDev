@@ -25,12 +25,13 @@
   --size-10xl: 10rem;
 }
 
-
 *{
   margin: 0;
   line-height: calc(1em + 0.5rem);
 }
-
+h2, label{
+  color: var(--clr-light)!important;
+}
 html{
   scroll-behavior: smooth;
 }

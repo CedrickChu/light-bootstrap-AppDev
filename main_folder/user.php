@@ -38,13 +38,15 @@
  </head>
  <body>
      <div class="wrapper">
-          <!-- sidebar start-->
-        <div id="sidebarContainer"></div>
+         <!-- sidebar start-->
+        <div class="sidebar-wrapper">
+                <?php include './template/sidebar.html'; ?>
+        </div>
         <!-- sidebar end-->
         
-    <div class="main-panel">
+        <div class="main-panel">
             <!-- navbar start-->
-        <div id="navbarContainer"></div>
+            <?php include "./template/navbar.html"; ?>
             <!-- navbar end-->
              <div class="content">
                  <div class="container-fluid">

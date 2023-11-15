@@ -41,12 +41,14 @@
     <div class="wrapper">
         
         <!-- sidebar start-->
-        <div id="sidebarContainer"></div>
+        <div class="sidebar-wrapper">
+                <?php include './template/sidebar.html'; ?>
+        </div>
         <!-- sidebar end-->
         
         <div class="main-panel">
             <!-- navbar start-->
-            <div id="navbarContainer"></div>
+            <?php include "./template/navbar.html"; ?>
             <!-- navbar end-->
             <div class="content">
                 <div class="container-fluid">
@@ -84,7 +86,7 @@
 
                                 $result = $conn->query($sql);
                                 echo "<div class='card-body table-full-width table-responsive'>";
-                                echo "<table  id='transaction-table' class='table table-hover table-striped'>";
+                                echo "<table  class='table table-hover table-striped'>";
                                     echo "<thead>";
                                         echo "<tr>";
                                             echo "<th>DATELOG</th>";
@@ -220,6 +222,10 @@
  -->
 <script src="./js/sidebar.js"></script>
 <script src="./js/navbar.js"></script>
+<script src="./js/search.js"></script>
+
+
+
 </body>
 <!--   Core JS Files   -->
 <script src="../assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>

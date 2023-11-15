@@ -82,13 +82,14 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
 <body>
     <div class="wrapper">
         <!-- sidebar start-->
-        <div id="sidebarContainer"></div>
-            <!-- sidebar end-->
-            
+        <div class="sidebar-wrapper">
+                <?php include './template/sidebar.html'; ?>
+        </div>
+        <!-- sidebar end-->
+        
         <div class="main-panel">
-                <!-- navbar start-->
-            <div id="navbarContainer"></div>
-                <!-- navbar end-->
+            <!-- navbar start-->
+            <?php include "./template/navbar.html"; ?>
 
             <div class="content">
                 <div class="container-fluid">
