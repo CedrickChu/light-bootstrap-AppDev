@@ -70,7 +70,6 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
 
 <body>
     <div class="wrapper">
-    <div class="wrapper">
         <!-- sidebar start-->
         <div class="sidebar-wrapper">
                 <?php include './template/sidebar.html'; ?>
@@ -157,7 +156,8 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                     $stmt->bind_param("ssssssi", $office, $contactnum, $address, $email, $city, $postal, $id);
 
                     if ($stmt->execute()) {
-                        echo "<script>alert('Office record with ID: " . $row['id'] . " has been successfully edited!');</script>";
+                        echo "<script>alert('Office record with ID: " . $row['id'] . " has been successfully edited!');";
+                        echo "window.location.href = 'office.php';</script>";
                         exit();
                     } else {
                         echo "<script>alert('Error updating record: " . $stmt->error . "');</script>";

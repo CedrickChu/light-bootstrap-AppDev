@@ -94,7 +94,7 @@
                                     echo "</tr>";
                                 echo "</thead>";
 
-                                echo "<tbody id='employee-table'>";
+                                echo "<tbody id='transaction-table'>";
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr class='employee-row'>";
@@ -102,7 +102,7 @@
                                             echo "<td>" . $row['firstname'] . "</td>";
                                             echo "<td>" . $row['address'] . "</td>";
                                             echo "<td>" . $row['office'] . "</td>";
-                                            echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_employee.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
+                                            echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_employee.php?edit=" . $row['id'] . "'>EDIT</a>   <a href='delete_employee.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
                                         echo "</tr>";
                                     }
                                     echo "</tbody>";

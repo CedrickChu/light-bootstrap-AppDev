@@ -182,7 +182,8 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
                                             WHERE t.id = $id";
 
                             if (mysqli_query($conn, $updateQuery)) {
-                                echo "<script>alert('Transaction record with ID: " . $row['id'] . " has been successfully edited!');</script>";
+                                echo "<script>alert('Transaction record with ID: " . $row['id'] . " has been successfully edited!');";
+                                echo "window.location.href = 'transaction.php';</script>";
 
                                 exit();
                             } else {

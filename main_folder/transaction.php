@@ -109,7 +109,7 @@
                                     echo "<td>" . $row['office'] . "</td>";
                                     echo "<td>" . $row['employee'] . "</td>";
                                     echo "<td>" . $row['remarks'] . "</td>";
-                                    echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_transaction.php?edit=" . $row['id'] . "'>EDIT</a> <a class='delete-anchor' href='delete_record.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
+                                    echo "<td class='edit-link' style='display: none;'><a class='edit-anchor' href='edit_transaction.php?edit=" . $row['id'] . "'>EDIT</a> <a class='delete-anchor' href='delete_transaction.php?delete=" . $row['id'] . "' class='delete-link'>DELETE</a></td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>"; 

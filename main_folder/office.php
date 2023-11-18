@@ -87,7 +87,7 @@
                                     echo "</tr>";
                                 echo "</thead";
                                 
-                                echo "<tbody id='office-table'>";
+                                echo "<tbody id='transaction-table'>";
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr class='office-row'>";
@@ -113,10 +113,7 @@
                     </div>
                 </div>
             </div>
-             <!-- script for edit function -->
             <script src="./js/edit.js"></script>
-
-             <!-- script for search function -->
             <script src="./js/search.js"></script>
             <footer>
                 <p class="copyright text-center" style='color:#E5E7EB;'>
@@ -208,7 +205,7 @@
     </div>
 </div>
  -->
-<script src="./js/sidebar.js"></script>
+ <script src="./js/sidebar.js"></script>
 <script src="./js/navbar.js"></script>
 </body>
 <!--   Core JS Files   -->
