@@ -222,7 +222,7 @@
  -->
 <script src="./js/sidebar.js"></script>
 <script src="./js/navbar.js"></script>
-<script src="./js/search.js"></script>
+<script src="./js/lightmode.js"></script>
 
 
 

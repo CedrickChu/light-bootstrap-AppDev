@@ -143,7 +143,7 @@ if (isset($_POST['submit'])) {
                             <label for="name">REMARKS: </label>
                             <input type="text" id="remarks" name="remarks" required>
                         </div>
-                        <button class="button-button" type="submit" name="submit">Submit</button>
+                        <button class="btn btn-fill" type="submit" name="submit">Submit</button>
                     </form>
                 </div>
                 <footer>

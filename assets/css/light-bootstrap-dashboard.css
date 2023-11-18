@@ -347,7 +347,6 @@ body>.navbar-collapse {
     background-size: cover;
     background-position: center center;
 }
-
 .sidebar .sidebar-wrapper,
 body>.navbar-collapse .sidebar-wrapper {
     position: relative;
@@ -357,8 +356,9 @@ body>.navbar-collapse .sidebar-wrapper {
     width: 260px;
     z-index: 4;
     padding-bottom: 100px;
-    background-color: #AA8B56!important;
+   
 }
+
 .sidebar .sidebar-wrapper .logo img {
     opacity: 1!important;
 }

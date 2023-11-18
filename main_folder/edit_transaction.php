@@ -98,7 +98,7 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
                     <div class="form-group">
                     <?php
                         echo "<label for='documentcode'>DOCUMENT CODE: </label>";
-                        echo "<select id='documentcode' name='documentcode' required>";
+                        echo "<select style='margin-left: .3rem;' id='documentcode' name='documentcode' required>";
                         $selectedDocumentCode = isset($documentcode) ? $documentcode : '';
                 
                         $documentCodes = [100, 101, 102];
@@ -113,7 +113,7 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
                         echo "<label for='action'>ACTION: </label>";
                         $selectedAction = isset($action) ? $action : '';
                         $actions = ['IN', 'OUT', 'COMPLETE'];
-                        echo "<select id='action' name='action' required>";
+                        echo "<select style='margin-left: .3rem;' id='action' name='action' required>";
                             foreach ($actions as $act) {
                                 $selected = ($act == $selectedAction) ? 'selected' : '';
                                 echo "<option value='$act' $selected>$act</option>";
@@ -135,7 +135,7 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
                             echo "Error: " . $conn->error;
                         }
                         
-                            echo "<select id='office' name='office' required>";
+                            echo "<select style='margin-left: .3rem;' id='office' name='office' required>";
                             foreach ($offices as $off) {
                                 $selected = ($off == $selectedOffice) ? 'selected' : '';
                                 echo "<option value='$off' $selected>$off</option>";
@@ -157,7 +157,7 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
                     </div>
                     </div>
                         <a href="transaction.php">
-                            <button class="button-button" type="submit" name="submit">Submit</button>
+                            <button class="btn btn-fill" type="submit" name="submit">Submit</button>
                         </a>
                     </div>
                 </form>

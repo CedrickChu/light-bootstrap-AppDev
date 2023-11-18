@@ -106,7 +106,7 @@ if (isset($_POST['submit'])) {
                             <input type="text" id="postal" name="postal" required>
                         </div>
 
-                        <button class="button-button" type="submit" name="submit">Submit</button>
+                        <button class="btn btn-fill" type="submit" name="submit">Submit</button>
                     </form>
                 </div>
                 <footer>

@@ -111,7 +111,7 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                                 echo "Error: " . $conn->error;
                             }
                             
-                                echo "<select id='office' name='office' required>";
+                                echo "<select style='margin-left: .3rem;' id='office' name='office' required>";
                                 foreach ($offices as $off) {
                                     $selected = ($off == $selectedOffice) ? 'selected' : '';
                                     echo "<option value='$off' $selected>$off</option>";
@@ -121,7 +121,7 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                         ?>
                         <div>
                             <a href="employee.php">
-                                <button class="button-button" type="submit" name="submit">Submit</button>
+                                <button class="btn btn-fill" type="submit" name="submit">Submit</button>
                             </a>
                         </div>
                     </form>
