@@ -48,11 +48,11 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
 
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="./styles/form.css">
-    <link rel="stylesheet" href="./styles/header.css">
-    <link rel="stylesheet" href="./styles/utils.css">
-    <link rel="stylesheet" href="./styles/nav.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/form.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/utils.css">
+    <link rel="stylesheet" href="styles/nav.css">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -99,7 +99,7 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                             echo "Error: " . $conn->error;
                         }
                         
-                            echo "<select style='margin-left: .3rem;' id='office' name='office' required>";
+                            echo "<select class='form-control' style='width: 50%'  id='office' name='office' required><br>";
                             foreach ($offices as $off) {
                                 $selected = ($off == $selectedOffice) ? 'selected' : '';
                                 echo "<option value='$off' $selected>$off</option>";
@@ -110,23 +110,23 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                     
                     <div class="form-group">
                         <label for="lastname">CONTACT NUMBER: </label>
-                        <input type="text" name="contactnum" value="<?php echo $contactnum; ?>" required><br>
+                        <input class='form-control' style='width: 50%' type="text" name="contactnum" value="<?php echo $contactnum; ?>"><br>
                     </div>
                     <div class="form-group">
                         <label for="remarks">EMAIL: </label>
-                        <input type="text" name="email" value="<?php echo $email; ?>" required><br>
+                        <input class='form-control' style='width: 50%' type="text" name="email" value="<?php echo $email; ?>" required><br>
                     </div>
                     <div class="form-group">
                         <label for="remarks">ADDRESS: </label>
-                        <input type="text" name="address" value="<?php echo $address; ?>" required><br>
+                        <input class='form-control' style='width: 50%'  type="text" name="address" value="<?php echo $address; ?>" required><br>
                     </div>
                     <div class="form-group">
                         <label for="remarks">CITY: </label>
-                        <input type="text" name="city" value="<?php echo $city; ?>" required><br>
+                        <input class='form-control' style='width: 50%'  type="text" name="city" value="<?php echo $city; ?>" required><br>
                     </div>
                     <div class="form-group">
                         <label for="remarks">POSTAL: </label>
-                        <input type="text" name="postal" value="<?php echo $postal; ?>" required><br>
+                        <input class='form-control' style='width: 50%'  type="text" name="postal" value="<?php echo $postal; ?>" required><br>
                     </div>
                     <div>
                         <a href="office.php">

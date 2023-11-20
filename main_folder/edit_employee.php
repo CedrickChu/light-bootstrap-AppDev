@@ -88,15 +88,15 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                     <form action="" method="post">
                         <div class="form-group">
                             <label for="lastname">LAST NAME: </label>
-                            <input type="text" name="lastname" value="<?php echo $lastname; ?>" required><br>
+                            <input class='form-control' style='width: 50%' type="text" name="lastname" value="<?php echo $lastname; ?>" required><br>
                         </div>
                         <div class="form-group">
                                 <label for="firstname">FIRST NAME: </label>
-                                <input type="text" name="firstname" value="<?php echo $firstname; ?>" required><br>
+                                <input class='form-control' style='width: 50%'  type="text" name="firstname" value="<?php echo $firstname; ?>" required><br>
                         </div>
                         <div class="form-group">
                                 <label for="remarks">ADDRESS: </label>
-                                <input type="text" name="address" value="<?php echo $address; ?>" required><br>
+                                <input class='form-control' style='width: 50%'  type="text" name="address" value="<?php echo $address; ?>" required><br>
                         </div>
                         <?php
                             echo "<div class='form-group'>";
@@ -111,7 +111,7 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
                                 echo "Error: " . $conn->error;
                             }
                             
-                                echo "<select style='margin-left: .3rem;' id='office' name='office' required>";
+                                echo "<select class='form-control' style='width: 50%' id='office' name='office' required>";
                                 foreach ($offices as $off) {
                                     $selected = ($off == $selectedOffice) ? 'selected' : '';
                                     echo "<option value='$off' $selected>$off</option>";

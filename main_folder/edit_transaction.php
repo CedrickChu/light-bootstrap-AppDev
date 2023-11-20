@@ -160,7 +160,7 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
                         </div>
                         </div>
                             <a href="transaction.php">
-                                <button class="btn btn-fill" type="submit" name="submit">Submit</button>
+                                <button style='margin-left: .9rem;' class="btn btn-fill" type="submit" name="submit">Submit</button>
                             </a>
                         </div>
                     </form>
