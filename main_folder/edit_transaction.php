@@ -59,11 +59,11 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
 
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="./styles/form.css">
-    <link rel="stylesheet" href="./styles/header.css">
-    <link rel="stylesheet" href="./styles/utils.css">
-    <link rel="stylesheet" href="./styles/nav.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/form.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/utils.css">
+    <link rel="stylesheet" href="styles/nav.css">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -83,7 +83,7 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
     <div class="wrapper">
         <!-- sidebar start-->
         <div class="sidebar-wrapper">
-                <?php include './template/sidebar.html'; ?>
+                <?php include 'template/sidebar.html'; ?>
         </div>
         <!-- sidebar end-->
         
@@ -93,74 +93,77 @@ if(isset($_GET['edit']) && !empty($_GET['edit'])) {
 
             <div class="content">
                 <div class="container-fluid">
-                <h2>Edit transaction</h2>
-                <form action="" method="post">
-                    <div class="form-group">
-                    <?php
-                        echo "<label for='documentcode'>DOCUMENT CODE: </label>";
-                        echo "<select style='margin-left: .3rem;' id='documentcode' name='documentcode' required>";
-                        $selectedDocumentCode = isset($documentcode) ? $documentcode : '';
-                
-                        $documentCodes = [100, 101, 102];
-                        foreach ($documentCodes as $code) {
-                            $selected = ($code == $selectedDocumentCode) ? 'selected' : '';
-                            echo "<option value='$code' $selected>$code</option>";
-                        }
-                        echo "</select>" . "<br>";
-                    echo "</div>";
-                    
-                    echo "<div class='form-group'>";
-                        echo "<label for='action'>ACTION: </label>";
-                        $selectedAction = isset($action) ? $action : '';
-                        $actions = ['IN', 'OUT', 'COMPLETE'];
-                        echo "<select style='margin-left: .3rem;' id='action' name='action' required>";
-                            foreach ($actions as $act) {
-                                $selected = ($act == $selectedAction) ? 'selected' : '';
-                                echo "<option value='$act' $selected>$act</option>";
-                            }
-                        echo "</select>" . "<br>";
-                    echo "</div>";
-                    
-                    echo "<div class='form-group'>";
-                        echo "<label for='office'>OFFICE: </label>";
-                        $selectedOffice = isset($office) ? $office : '';
-                        $sql2 = "SELECT name FROM recordapp_db.office WHERE id=3;";
-                        $result2 = $conn->query($sql2);
-                        if ($result2) {
-                            
-                            $row2 = $result2->fetch_assoc();
-                        
-                            $offices = ['Computer Studies Department', 'Creative Code Inc', $row2['name'], 'Office of the President'];
-                        } else {
-                            echo "Error: " . $conn->error;
-                        }
-                        
-                            echo "<select style='margin-left: .3rem;' id='office' name='office' required>";
-                            foreach ($offices as $off) {
-                                $selected = ($off == $selectedOffice) ? 'selected' : '';
-                                echo "<option value='$off' $selected>$off</option>";
-                            }
-                    echo "</div>";
-                    echo "</select>" . "<br>";
-                    ?>
-                    <div class="form-group">
-                        <label for="lastname">LAST NAME: </label>
-                        <input type="text" name="lastname" value="<?php echo $last_name; ?>" required><br>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastname">FIRST NAME: </label>
-                        <input type="text" name="firstname" value="<?php echo $first_name; ?>" required><br>
-                    </div>
-                    <div class="form-group">
-                        <label for="remarks">Remarks: </label>
-                        <input type="text" name="remarks" value="<?php echo $remarks; ?>" required><br>
-                    </div>
-                    </div>
-                        <a href="transaction.php">
-                            <button class="btn btn-fill" type="submit" name="submit">Submit</button>
-                        </a>
-                    </div>
-                </form>
+                    <h2>Edit transaction</h2>
+                    <form action="" method="post">
+                        <div class="form-row">
+                            <div class="col-sm">
+                                <label for="documentcode" style="white-space: nowrap;">DOCUMENT CODE: </label>
+                                <select class="form-control" id="documentcode" name="documentcode" required>
+                                    <?php
+                                    $selectedDocumentCode = isset($documentcode) ? $documentcode : '';
+                                    $documentCodes = [100, 101, 102];
+                                    foreach ($documentCodes as $code) {
+                                        $selected = ($code == $selectedDocumentCode) ? 'selected' : '';
+                                        echo "<option value='$code' $selected>$code</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                            <div class="col-sm">
+                                <label for="action">ACTION: </label>
+                                <select class="form-control" id="action" name="action" required>
+                                    <?php
+                                    $selectedAction = isset($action) ? $action : '';
+                                    $actions = ['IN', 'OUT', 'COMPLETE'];
+                                    foreach ($actions as $act) {
+                                        $selected = ($act == $selectedAction) ? 'selected' : '';
+                                        echo "<option value='$act' $selected>$act</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                            <div class="col-sm">
+                                <label for="office">OFFICE: </label>
+                                <select class="form-control" id="office" name="office" required>
+                                    <?php
+                                    $selectedOffice = isset($office) ? $office : '';
+                                    $sql2 = "SELECT name FROM recordapp_db.office WHERE id=3;";
+                                    $result2 = $conn->query($sql2);
+                                    if ($result2) {
+                                        $row2 = $result2->fetch_assoc();
+                                        $offices = ['Computer Studies Department', 'Creative Code Inc', $row2['name'], 'Office of the President'];
+                                    } else {
+                                        echo "Error: " . $conn->error;
+                                    }
+
+                                    foreach ($offices as $off) {
+                                        $selected = ($off == $selectedOffice) ? 'selected' : '';
+                                        echo "<option value='$off' $selected>$off</option>";
+                                    }
+                                    ?>
+                                </select><br>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">LAST NAME: </label>
+                            <input class='form-control' style='width: 50%' type="text" name="lastname" value="<?php echo $last_name; ?>" required><br>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">FIRST NAME: </label>
+                            <input class='form-control' style='width: 50%' type="text" name="firstname" value="<?php echo $first_name; ?>" required><br>
+                        </div>
+                        <div class="form-group">
+                            <label for="remarks">Remarks: </label>
+                            <input class='form-control' style='width: 50%' type="text" name="remarks" value="<?php echo $remarks; ?>" required><br>
+                        </div>
+                        </div>
+                            <a href="transaction.php">
+                                <button class="btn btn-fill" type="submit" name="submit">Submit</button>
+                            </a>
+                        </div>
+                    </form>
                     <?php
                         if (isset($_POST['submit'])) {
                             $documentcode = $_POST['documentcode'];
